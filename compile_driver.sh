@@ -1,0 +1,1 @@
+gcc -g -O0  -Wall -o driver.out ast.c code_gen.c common_defs.c hash_function.c lexer.c linked_list_id.c linked_list_rec.c linked_list_func.c new_driver.c parse_table.c parser.c parser_preprocess.c semantic_analyser.c table_id.c table_func.c table_rec.c type_extraction_id.c type_extraction_rec.c type_extraction_func.c

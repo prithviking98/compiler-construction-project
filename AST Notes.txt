@@ -1,0 +1,56 @@
+PS: 1. the children in arithmetic expressions are of the form "all" with either 1 or 2 kids (latter for records)
+	2. in funCall stmt node, the order is: FUNID, O/P par, I/P parameter
+
+
+1. astNode * newASTNode(gterm tag, astNode *firstChild):
+	makes a new AST Node with the given tag and first Child
+
+2. astNode * newASTLeaf(gterm tag, token t):
+	makes a new AST leaf node with the given tag
+
+3. the root of the AST has the tag: "program" and it's children are a list of functions and a main function
+	PS: the main function is definitely there. the other functions could be epsilon, therefore when creating the node, we traverse and set the last's function's sibling to be mainFunction.
+
+4. mainFunction AST node has only 1 child of the type "stmts"
+
+5. function AST has 4 children: function_ID, input_par, output_par, stmts
+	PS: output_par can become eps in the grammar, but we create a node for it anyway to differentiate between the two parameter lists
+
+6. parameter_lists are a chain with alternating type and name nodes
+
+7. stmts is an interesting case. it is of the form: <stmts>===><typeDefinitions> <declarations> <otherStmts><returnStmt>
+	typeDefinitions, declarations and otherStmts are recursive structures. so when we use this rule, and call the AST construction for these 3, they are long chains. so we create 3 seperate nodes with their names, and set the child to the long chain. returnStmt however doesn't need a new node constructed, as one is already made for it when we call it's construction.
+
+8. typDefinitions node's child is a chain of typeDefinition nodes.
+
+9. typeDefinition node has 2 kids: one is a leaf TK_RECORDID, and the other is fieldDefinitions.
+
+10. fieldDefinitions is a chain of (just like input_par) of alternating type and name nodes
+
+11. declarations node's child is a chain of declaration nodes
+
+12. declaration node has 3 children: type, name, and an optional "global_or_not"
+
+13. otherStmts node's child is a chain of stmt nodes.
+
+14. a stmt node can take 6 forms:
+		1. assignment stmt
+		2. iterative stmt
+		3. conditional stmt
+		4. write stmt
+		5. read stmt
+		6. funCall stmt
+
+15. an assignment node has 2 children: a singleOrRecId node and it's sibling an arithmeticExpression node
+
+16. a singleOrRecId node has either 1 or 2 children (the latter is in the case of a record field assigment)
+
+17. an arithmetic expression's node is the AST like she described in class
+
+18. the leaves of arithmetic expression are of the type "all" with 1/2 kids
+
+19. the iterative stmt node has 2 kids: one is the boolean expression node (which is a tree just like she made in class, and the other is a "otherStmts" node which has as its child a chain of stms)
+
+20. the conditional stmt node has 3 childrenL the first is the boolean expression node, the second child is the if_part (under the tag TK_IF) and the third child is the else part (under the tag TK_ELSE) the last 2 have as their children a long chain of stmts
+
+21. the leaves in the boolean expression node are of the form TK_NUM|TK_RNUM|TK_ID (i.e. no record field used here)

@@ -1,3 +1,10 @@
+# vim temps
+*.swp
+*~
+
+#zips
+*.zip
+
 # Prerequisites
 *.d
 
